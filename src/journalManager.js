@@ -66,20 +66,6 @@ export class JournalManager {
         return this.entries.find(entry => entry.id === id) || null;
     }
 
-    // Update an entry
-    updateEntry(id, title, content, mood) {
-        const entryIndex = this.entries.findIndex(entry => entry.id === id);
-        if (entryIndex === -1) return null;
-
-        this.entries[entryIndex].title = title.trim();
-        this.entries[entryIndex].content = content.trim();
-        this.entries[entryIndex].mood = mood || this.entries[entryIndex].mood;
-        this.entries[entryIndex].updatedAt = new Date().toISOString();
-
-        this.saveEntries();
-        return this.entries[entryIndex];
-    }
-
     // Delete an entry
     deleteEntry(id) {
         const entryIndex = this.entries.findIndex(entry => entry.id === id);
@@ -88,18 +74,6 @@ export class JournalManager {
         this.entries.splice(entryIndex, 1);
         this.saveEntries();
         return true;
-    }
-
-    // Search entries by title, content, or mood
-    searchEntries(query) {
-        const searchTerm = query.toLowerCase().trim();
-        if (!searchTerm) return this.getAllEntries();
-
-        return this.entries.filter(entry =>
-            entry.title.toLowerCase().includes(searchTerm) ||
-            entry.content.toLowerCase().includes(searchTerm) ||
-            entry.mood.toLowerCase().includes(searchTerm)
-        ).sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
     // Get entry statistics
